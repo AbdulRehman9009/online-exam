@@ -81,10 +81,14 @@ model Exam {
   title       String
   description String?
   duration    Int        // In minutes
+  startTime   DateTime?  
+  expiresAt   DateTime?  
   creatorId   String
   creator     User       @relation("CreatedExams", fields: [creatorId], references: [id])
   questions   Question[]
   results     Result[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Question {
@@ -104,5 +108,6 @@ model Result {
   exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
   score     Int
   total     Int
+  answers   Json?    
   createdAt DateTime @default(now())
 }
