@@ -28,6 +28,7 @@ model User {
   role          Role      @default(STUDENT)
   exams         Exam[]    @relation("CreatedExams")
   results       Result[]
+  notifications Notification[]
   accounts      Account[]
   sessions      Session[]
 }
@@ -109,5 +110,15 @@ model Result {
   score     Int
   total     Int
   answers   Json?    
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 }

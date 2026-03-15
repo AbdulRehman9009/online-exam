@@ -6,7 +6,6 @@ import { GraduationCap, Github, Twitter, Linkedin, Mail } from "lucide-react";
 
 const platformLinks = [
   { label: "Features", href: "/features" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Security", href: "/security" },
   { label: "Request a Demo", href: "/demo" },
 ];
@@ -15,12 +14,10 @@ const resourceLinks = [
   { label: "Documentation", href: "/documentation" },
   { label: "Blog", href: "/blog" },
   { label: "Study Guides", href: "/guides" },
-  { label: "Help Center", href: "/support" },
 ];
 
 const companyLinks = [
   { label: "About Us", href: "/about" },
-  { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
   { label: "Privacy Policy", href: "/privacy" },
 ];
