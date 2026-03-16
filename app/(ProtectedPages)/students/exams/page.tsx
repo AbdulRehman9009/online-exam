@@ -21,8 +21,21 @@ export default async function StudentExamsPage() {
     redirect("/sign-in");
   }
 
-  // Get exams prioritizing the ones coming up or active.
-  const exams = await prisma.exam.findMany({
+  // Get the student's linked faculty information
+  const student = await prisma.student.findUnique({
+    where: { userId: session.user.id },
+    include: {
+      faculty: true
+    }
+  });
+
+  const facultyUserId = student?.faculty?.userId;
+
+  // If student is not linked to any faculty, they shouldn't see any exams as per requirements
+  const exams = facultyUserId ? await prisma.exam.findMany({
+    where: {
+      creatorId: facultyUserId
+    },
     orderBy: {
       createdAt: 'desc'
     },
@@ -31,7 +44,7 @@ export default async function StudentExamsPage() {
         select: { questions: true }
       }
     }
-  });
+  }) : [];
 
   return (
     <div className="space-y-6">

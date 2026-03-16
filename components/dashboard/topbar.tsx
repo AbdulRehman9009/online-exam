@@ -204,14 +204,18 @@ export function Topbar({ user, initialNotifications = [] }: TopbarProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              <UserIcon className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-            </DropdownMenuItem>
+            <Link href={`/${user.role?.toLowerCase()}/dashboard`}>
+              <DropdownMenuItem className="cursor-pointer">
+                <UserIcon className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+            </Link>
+            <Link href={`/${user.role?.toLowerCase()}/settings`}>
+              <DropdownMenuItem className="cursor-pointer">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut()} className="text-destructive focus:text-destructive cursor-pointer">
               <LogOut className="mr-2 h-4 w-4" />

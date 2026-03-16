@@ -35,7 +35,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const pathname = usePathname();
 
-  if (pathname?.startsWith("/faculty") || pathname?.startsWith("/students")) {
+  if (pathname?.startsWith("/faculty") || pathname?.startsWith("/admin") || pathname?.startsWith("/students")) {
     return null;
   }
 

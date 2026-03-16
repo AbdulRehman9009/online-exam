@@ -10,7 +10,9 @@ export default async function DashboardRedirectPage() {
 
   const role = session.user.role?.toUpperCase();
 
-  if (role === "FACULTY") {
+  if (role === "ADMIN") {
+    redirect("/admin/dashboard");
+  } else if (role === "FACULTY") {
     redirect("/faculty/dashboard");
   } else {
     redirect("/students/dashboard");

@@ -12,8 +12,8 @@ interface AuthFormWrapperProps {
   children: React.ReactNode;
   headerLabel: string;
   headerDescription?: string;
-  backButtonLabel: string;
-  backButtonHref: string;
+  backButtonLabel?: string;
+  backButtonHref?: string;
   showSocial?: boolean;
 }
 
@@ -45,16 +45,18 @@ export const AuthFormWrapper = ({
           {/* We'll add a separate Social component later or embed it directly in SignIn */}
         </CardFooter>
       )}
-      <CardFooter className="flex flex-col gap-2 w-full">
-        <Button
-          variant="link"
-          className="font-normal w-full"
-          size="sm"
-          asChild
-        >
-          <Link href={backButtonHref}>{backButtonLabel}</Link>
-        </Button>
-      </CardFooter>
+      {backButtonHref && backButtonLabel && (
+        <CardFooter className="flex flex-col gap-2 w-full">
+          <Button
+            variant="link"
+            className="font-normal w-full"
+            size="sm"
+            asChild
+          >
+            <Link href={backButtonHref}>{backButtonLabel}</Link>
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 };

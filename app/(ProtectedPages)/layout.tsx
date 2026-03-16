@@ -18,8 +18,7 @@ export default async function ProtectedLayout({
 
   const notifications = await getNotifications();
 
-  // Ensure role is normalized lowercase for the sidebar if needed
-  const role = session.user.role?.toLowerCase() as "faculty" | "student";
+  const role = session.user.role?.toLowerCase() as "faculty" | "student" | "admin";
 
   return (
     <SidebarProvider>

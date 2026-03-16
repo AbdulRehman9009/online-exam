@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
 }
 
@@ -14,6 +14,7 @@ datasource db {
 }
 
 enum Role {
+  ADMIN
   FACULTY
   STUDENT
 }
@@ -26,11 +27,85 @@ model User {
   image         String?
   password      String?
   role          Role      @default(STUDENT)
+  
+  // Relations to specific profiles
+  admin         Admin?
+  faculty       Faculty?
+  student       Student?
+
   exams         Exam[]    @relation("CreatedExams")
   results       Result[]
   notifications Notification[]
   accounts      Account[]
   sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([role])
+  @@index([email])
+}
+
+model Admin {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Faculty {
+  id           String      @id @default(cuid())
+  userId       String      @unique
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teacherNo    String?     @unique
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  queries      StudentQuery[]
+  students     Student[]
+
+  @@index([userId])
+  @@index([departmentId])
+}
+
+model Student {
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rollNo   String? @unique
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id])
+  facultyId String?
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  queries  StudentQuery[]
+
+  @@index([userId])
+  @@index([courseId])
+  @@index([facultyId])
+}
+
+model Department {
+  id      String    @id @default(cuid())
+  name    String    @unique
+  faculty Faculty[]
+  courses Course[]
+}
+
+model Course {
+  id           String     @id @default(cuid())
+  name         String
+  code         String     @unique
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+  students     Student[]
+}
+
+model SystemConfig {
+  id                 String   @id @default(cuid())
+  institutionName    String   @default("Online Exam System")
+  institutionAddress String?
+  contactEmail       String?
+  contactPhone       String?
+  logoUrl            String?
+  maintenanceMode    Boolean  @default(false)
+  updatedAt          DateTime @updatedAt
 }
 
 model Account {
@@ -90,6 +165,9 @@ model Exam {
   results     Result[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  @@index([creatorId])
+  @@index([createdAt])
 }
 
 model Question {
@@ -99,6 +177,8 @@ model Question {
   text          String
   options       String[] // Next.js handles this as an array
   correctAnswer Int      // Index of the correct option (e.g., 0, 1, 2, 3)
+
+  @@index([examId])
 }
 
 model Result {
@@ -111,6 +191,28 @@ model Result {
   total     Int
   answers   Json?    
   createdAt DateTime @default(now())
+
+  @@index([studentId])
+  @@index([examId])
+  @@index([createdAt])
+}
+
+model StudentQuery {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  facultyId String?
+  faculty   Faculty? @relation(fields: [facultyId], references: [id], onDelete: SetNull)
+  question  String   @db.Text
+  answer    String?  @db.Text
+  isResolved Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([facultyId])
+  @@index([isResolved])
+  @@index([createdAt])
 }
 
 model Notification {
@@ -121,4 +223,8 @@ model Notification {
   message   String
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
 }

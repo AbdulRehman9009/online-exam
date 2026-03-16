@@ -10,15 +10,23 @@ export async function getStudentDashboardData() {
 
   const userId = session.user.id
 
+  const studentProfile = await prisma.student.findUnique({
+    where: { userId },
+    include: { faculty: true }
+  })
+
+  const facultyUserId = studentProfile?.faculty?.userId
+
   const [upcomingExams, results, notifications] = await Promise.all([
-    prisma.exam.count({
+    facultyUserId ? prisma.exam.count({
       where: {
+        creatorId: facultyUserId,
         OR: [
           { startTime: { gt: new Date() } },
           { startTime: null }
         ]
       }
-    }),
+    }) : Promise.resolve(0),
     prisma.result.findMany({
       where: { studentId: userId },
       include: { exam: true },
@@ -64,11 +72,15 @@ export async function getFacultyDashboardData() {
     prisma.result.findMany({
       where: {
         exam: { creatorId: userId }
+      },
+      select: {
+        score: true,
+        total: true,
+        studentId: true
       }
     })
   ])
 
-  // Real calculation for average pass rate (score >= 50%)
   const totalResults = totalStudentsResults.length
   const passedResults = totalStudentsResults.filter(r => (r.score / r.total) >= 0.5).length
   const avgPassRate = totalResults > 0 ? Math.round((passedResults / totalResults) * 100) : 0
@@ -96,14 +108,21 @@ export async function broadcastNotification(data: { title: string, message: stri
   const session = await auth()
   if (!session?.user?.id || session.user.role !== "FACULTY") return { error: "Unauthorized" }
 
-  const students = await prisma.user.findMany({
-    where: { role: "STUDENT" },
+  const facultyProfile = await prisma.faculty.findUnique({
+    where: { userId: session.user.id },
     select: { id: true }
+  })
+
+  if (!facultyProfile) return { error: "Faculty profile not found" }
+
+  const students = await prisma.student.findMany({
+    where: { facultyId: facultyProfile.id },
+    select: { userId: true }
   })
 
   await prisma.notification.createMany({
     data: students.map(student => ({
-      userId: student.id,
+      userId: student.userId,
       title: data.title,
       message: data.message,
     }))

@@ -1,7 +1,7 @@
 "use server";
 
 import * as z from "zod";
-import { signIn } from "@/lib/auth";
+import { signIn, auth } from "@/lib/auth";
 import { LoginSchema, RegisterSchema } from "@/lib/schemas";
 import { AuthError } from "next-auth";
 import prisma from "@/lib/prisma";
@@ -18,12 +18,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
 
   const { email, password, role } = validatedFields.data;
 
+  const redirectTo = role === "ADMIN" ? "/admin/dashboard" : (role === "FACULTY" ? "/faculty/dashboard" : "/students/dashboard");
+
   try {
     await signIn("credentials", {
       email,
       password,
       role, 
-      redirectTo: "/dashboard",
+      redirectTo,
     });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -122,4 +124,43 @@ export const updatePassword = async (password: string, token: string) => {
   });
 
   return { success: "Password updated!" };
+};
+
+export const updateUserSettings = async (values: any) => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return { error: "Unauthorized" };
+  }
+
+  const { name, currentPassword, newPassword } = values;
+
+  const dbUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+  });
+
+  if (!dbUser) {
+    return { error: "User not found" };
+  }
+
+  // Verify current password
+  const passwordsMatch = await bcrypt.compare(currentPassword, dbUser.password!);
+
+  if (!passwordsMatch) {
+    return { error: "Incorrect current password" };
+  }
+
+  const updateData: any = { name };
+
+  if (newPassword && newPassword.length >= 6) {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    updateData.password = hashedPassword;
+  }
+
+  await prisma.user.update({
+    where: { id: dbUser.id },
+    data: updateData,
+  });
+
+  return { success: "Settings updated successfully!" };
 };
