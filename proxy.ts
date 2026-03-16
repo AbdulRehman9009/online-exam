@@ -7,7 +7,7 @@ import {
   DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { nextUrl } = request;
   // Check for session token cookie (next-auth sets this)
   const isLoggedIn = !!request.cookies.get("authjs.session-token")?.value 
