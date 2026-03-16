@@ -55,6 +55,8 @@ const adminNav = [
   { title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 
+import { motion, AnimatePresence } from "motion/react";
+
 export function AppSidebar({ role, user, ...props }: AppSidebarProps) {
   const pathname = usePathname();
   const navItems = role === "admin" ? adminNav : (role === "faculty" ? facultyNav : studentNav);
@@ -63,9 +65,13 @@ export function AppSidebar({ role, user, ...props }: AppSidebarProps) {
     <Sidebar className="border-r border-sidebar-border/50 bg-background/50 backdrop-blur-xl" {...props}>
       <SidebarHeader className="h-20 flex items-center px-6">
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-90">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20 text-primary-foreground transform transition-transform hover:scale-105">
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20 text-primary-foreground transform"
+          >
             <GraduationCap size={22} strokeWidth={2.5} />
-          </div>
+          </motion.div>
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-tight leading-none text-foreground">SmartExam</span>
             <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground mt-0.5">Management</span>
@@ -78,25 +84,40 @@ export function AppSidebar({ role, user, ...props }: AppSidebarProps) {
           Main Menu
         </div>
         <SidebarMenu className="gap-1">
-          {navItems.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname === item.url}
-                tooltip={item.title}
-                className={`flex items-center gap-3 px-3 py-6 rounded-xl transition-all duration-300 ${
-                  pathname === item.url 
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-[1.02]" 
-                    : "hover:bg-primary/10 hover:text-primary text-muted-foreground hover:scale-[1.01]"
-                }`}
-              >
-                <Link href={item.url}>
-                  <item.icon size={20} className={pathname === item.url ? "text-primary-foreground" : ""} />
-                  <span className="font-medium">{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {navItems.map((item, index) => {
+            const isActive = pathname === item.url;
+            return (
+              <SidebarMenuItem key={item.title}>
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={item.title}
+                    className={`relative flex items-center gap-3 px-3 py-6 rounded-xl transition-all duration-300 ${
+                      isActive 
+                        ? "text-primary-foreground shadow-lg shadow-primary/20" 
+                        : "hover:bg-primary/10 hover:text-primary text-muted-foreground"
+                    }`}
+                  >
+                    <Link href={item.url} className="relative z-10 w-full flex items-center gap-3">
+                      <item.icon size={20} className={isActive ? "text-primary-foreground" : ""} />
+                      <span className={`font-bold ${isActive ? "text-primary-foreground" : ""}`}>{item.title}</span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="active-nav"
+                          className="absolute inset-0 bg-primary rounded-xl -z-10"
+                          transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                        />
+                      )}
+                    </Link>
+                  </SidebarMenuButton>
+                </motion.div>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarContent>
 

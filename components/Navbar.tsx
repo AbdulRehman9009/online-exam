@@ -106,19 +106,23 @@ const Navbar = () => {
                                 </Button>
                             )}
                         </div>
-                        <Link href="/sign-in">
-                            <Button 
-                                variant="outline" 
-                                className="h-10 px-6 rounded-full border-primary/20 hover:bg-primary/5 hover:text-primary transition-all font-bold"
-                            >
-                                Sign In
-                            </Button>
-                        </Link>
-                         <Link href="/sign-in/admin">
-                              <Button className="h-11 px-8 rounded-full bg-primary shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 transition-all group font-bold tracking-tight">
-                                  Admin Portal
-                              </Button>
-                         </Link>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Link href="/sign-in">
+                                <Button 
+                                    variant="outline" 
+                                    className="h-10 px-6 rounded-full border-primary/20 hover:bg-primary/5 hover:text-primary transition-all font-bold"
+                                >
+                                    Sign In
+                                </Button>
+                            </Link>
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                             <Link href="/sign-in/admin">
+                                  <Button className="h-11 px-8 rounded-full bg-primary shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all group font-bold tracking-tight">
+                                      Admin Portal
+                                  </Button>
+                             </Link>
+                        </motion.div>
                     </div>
 
                     {/* Mobile Menu Button */}

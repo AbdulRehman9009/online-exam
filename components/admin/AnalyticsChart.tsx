@@ -12,6 +12,7 @@ import {
   AreaChart,
   Area,
 } from "recharts";
+import { motion } from "motion/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AnalyticsChartProps {
@@ -24,7 +25,12 @@ interface AnalyticsChartProps {
 
 export function AnalyticsChart({ data }: AnalyticsChartProps) {
   return (
-    <Card className="lg:col-span-4 border-none shadow-md bg-card/50 backdrop-blur-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
+      <Card className="lg:col-span-4 border-none shadow-md bg-card/50 backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="text-xl">Platform Engagement</CardTitle>
         <CardDescription>Real-time participation in exams and student queries over the last 7 days.</CardDescription>
@@ -96,6 +102,7 @@ export function AnalyticsChart({ data }: AnalyticsChartProps) {
           </AreaChart>
         </ResponsiveContainer>
       </CardContent>
-    </Card>
+      </Card>
+    </motion.div>
   );
 }

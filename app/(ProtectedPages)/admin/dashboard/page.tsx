@@ -4,6 +4,7 @@ import { Users, FileText, School, GraduationCap, Shield, AlertTriangle, RefreshC
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { AnalyticsChart } from "@/components/admin/AnalyticsChart";
+import { StatCardsClient } from "@/components/admin/StatCardsClient";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -56,25 +57,7 @@ async function StatCards() {
     },
   ];
 
-  return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {statCards.map((stat) => (
-        <Card key={stat.title} className="border-none shadow-md shadow-black/5 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <div className={`p-2 rounded-xl ${stat.color}`}>
-              <stat.icon className="h-5 w-5" />
-            </div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">{stat.trend}</span>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold tracking-tight mb-0.5">{stat.value}</div>
-            <CardTitle className="text-sm font-medium text-muted-foreground mb-1">{stat.title}</CardTitle>
-            <p className="text-[11px] text-muted-foreground italic">{stat.description}</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
+  return <StatCardsClient statCards={statCards} />;
 }
 
 async function EngagementAnalytics() {
