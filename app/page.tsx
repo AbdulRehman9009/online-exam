@@ -3,6 +3,7 @@
 import { ShieldCheck, BookOpen, GraduationCap, LayoutDashboard, BrainCircuit, Activity, BarChart3, Clock, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion, type Variants } from "framer-motion"
+import Link from "next/link"
 
 export default function Home() {
   const features = [
@@ -133,14 +134,18 @@ export default function Home() {
                 transition={{ delay: 0.7, duration: 0.8 }}
                 className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               >
-                <Button size="lg" className="h-16 px-10 text-lg rounded-2xl group shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-300">
-                  Student Portal
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button size="lg" variant="outline" className="h-16 px-10 text-lg border-border rounded-2xl hover:bg-secondary bg-background/50 backdrop-blur-sm gap-2 hover:scale-105 transition-transform duration-300">
-                  <GraduationCap className="h-5 w-5" />
-                  Faculty Dashboard
-                </Button>
+                <Link href="/sign-in">
+                  <Button size="lg" className="h-16 px-10 text-lg rounded-2xl group shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-300">
+                    Student Portal
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/sign-in/faculty">
+                  <Button size="lg" variant="outline" className="h-16 px-10 text-lg border-border rounded-2xl hover:bg-secondary bg-background/50 backdrop-blur-sm gap-2 hover:scale-105 transition-transform duration-300">
+                    <GraduationCap className="h-5 w-5" />
+                    Faculty Dashboard
+                  </Button>
+                </Link>
               </motion.div>
 
               <motion.div

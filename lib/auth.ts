@@ -60,7 +60,8 @@ export const {
           });
 
           if (String(user.role).toUpperCase() !== String(role).toUpperCase()) {
-             throw new Error("Invalid login portal for your account. Please use the correct sign in page.");
+             console.warn("Auth: Role mismatch for user", email, "Expected:", role, "Found:", user.role);
+             return null;
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);

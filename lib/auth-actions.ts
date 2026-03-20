@@ -18,6 +18,28 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
 
   const { email, password, role } = validatedFields.data;
 
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!existingUser) {
+    return { error: "This email is not registered!" };
+  }
+
+  if (!existingUser.password) {
+    return { error: "This account uses Google Sign-In. Please use the appropriate option." };
+  }
+
+  if (String(existingUser.role).toUpperCase() !== String(role).toUpperCase()) {
+    return { error: "Incorrect portal for your account role. Please use the correct sign-in page." };
+  }
+
+  const passwordsMatch = await bcrypt.compare(password, existingUser.password);
+  
+  if (!passwordsMatch) {
+    return { error: "Incorrect password!" };
+  }
+
   const redirectTo = role === "ADMIN" ? "/admin/dashboard" : (role === "FACULTY" ? "/faculty/dashboard" : "/students/dashboard");
 
   try {
@@ -27,13 +49,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       role, 
       redirectTo,
     });
+    return { success: "Success!" };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: error.cause?.err?.message || "Invalid credentials!" };
+          return { error: "Invalid credentials!" };
         default:
-          return { error: error.cause?.err?.message || "Something went wrong!" };
+          return { error: "Something went wrong!" };
       }
     }
     throw error;
@@ -142,8 +165,6 @@ export const updateUserSettings = async (values: any) => {
   if (!dbUser) {
     return { error: "User not found" };
   }
-
-  // Verify current password
   const passwordsMatch = await bcrypt.compare(currentPassword, dbUser.password!);
 
   if (!passwordsMatch) {

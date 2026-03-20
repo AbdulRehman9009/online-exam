@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, CheckCircle, TrendingUp, BookOpen } from "lucide-react";
 import Link from "next/link";
@@ -15,29 +14,9 @@ interface StudentStatsClientProps {
 }
 
 export function StudentStatsClient({ data }: StudentStatsClientProps) {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
-  };
-
   return (
-    <motion.div 
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
-    >
-        <motion.div variants={item}>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div>
             <Card className="bg-primary text-primary-foreground border-none shadow-lg shadow-primary/20">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Upcoming Exams</CardTitle>
@@ -48,8 +27,8 @@ export function StudentStatsClient({ data }: StudentStatsClientProps) {
                 <p className="text-xs opacity-80 mt-1 italic">Check your schedule</p>
               </CardContent>
             </Card>
-        </motion.div>
-        <motion.div variants={item}>
+        </div>
+        <div>
             <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Completed Exams</CardTitle>
@@ -60,8 +39,8 @@ export function StudentStatsClient({ data }: StudentStatsClientProps) {
                 <p className="text-xs text-muted-foreground mt-1 italic">Keep it up!</p>
               </CardContent>
             </Card>
-        </motion.div>
-        <motion.div variants={item}>
+        </div>
+        <div>
             <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Average Score</CardTitle>
@@ -72,8 +51,8 @@ export function StudentStatsClient({ data }: StudentStatsClientProps) {
                 <p className="text-xs text-muted-foreground mt-1 italic">Based on {data.completedExamsCount} exams</p>
               </CardContent>
             </Card>
-        </motion.div>
-        <motion.div variants={item}>
+        </div>
+        <div>
             <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Notifications</CardTitle>
@@ -86,7 +65,7 @@ export function StudentStatsClient({ data }: StudentStatsClientProps) {
                 </Link>
               </CardContent>
             </Card>
-        </motion.div>
-    </motion.div>
+        </div>
+    </div>
   );
 }

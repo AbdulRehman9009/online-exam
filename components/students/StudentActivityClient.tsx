@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
 import { PlayCircle, Clock } from "lucide-react";
 import Link from "next/link";
@@ -15,30 +14,9 @@ interface StudentActivityClientProps {
 }
 
 export function StudentActivityClient({ data }: StudentActivityClientProps) {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
-  };
-
   return (
-    <motion.div 
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="grid gap-6 md:grid-cols-2"
-    >
-        <motion.div variants={item}>
+    <div className="grid gap-6 md:grid-cols-2">
+        <div>
             <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm h-full">
               <CardHeader>
                 <CardTitle>Upcoming Exams</CardTitle>
@@ -69,9 +47,9 @@ export function StudentActivityClient({ data }: StudentActivityClientProps) {
                 )}
               </CardContent>
             </Card>
-        </motion.div>
+        </div>
 
-        <motion.div variants={item}>
+        <div>
             <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm h-full">
               <CardHeader>
                 <CardTitle>Recent Results</CardTitle>
@@ -83,11 +61,8 @@ export function StudentActivityClient({ data }: StudentActivityClientProps) {
                 <div className="space-y-4">
                   {data.recentResults.length > 0 ? (
                     data.recentResults.map((result: any, index: number) => (
-                      <motion.div 
+                      <div 
                         key={result.id} 
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5 + (index * 0.1) }}
                         className="group transition-all"
                       >
                         <div className="flex items-center justify-between p-2 rounded-xl group-hover:bg-accent/30 cursor-default">
@@ -105,7 +80,7 @@ export function StudentActivityClient({ data }: StudentActivityClientProps) {
                             <span className="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[9px] font-bold rounded-full uppercase border border-emerald-500/20">Pass</span>
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     ))
                   ) : (
                     <p className="text-sm text-muted-foreground p-4 text-center italic">No results available yet.</p>
@@ -120,7 +95,7 @@ export function StudentActivityClient({ data }: StudentActivityClientProps) {
                  </Link>
               </CardFooter>
             </Card>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
   );
 }

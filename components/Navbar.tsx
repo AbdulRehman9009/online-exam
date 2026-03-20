@@ -112,14 +112,14 @@ const Navbar = () => {
                                     variant="outline" 
                                     className="h-10 px-6 rounded-full border-primary/20 hover:bg-primary/5 hover:text-primary transition-all font-bold"
                                 >
-                                    Sign In
+                                    Student Sign In
                                 </Button>
                             </Link>
                         </motion.div>
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                             <Link href="/sign-in/admin">
+                             <Link href="/sign-in/faculty">
                                   <Button className="h-11 px-8 rounded-full bg-primary shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all group font-bold tracking-tight">
-                                      Admin Portal
+                                      Faculty Sign In
                                   </Button>
                              </Link>
                         </motion.div>
@@ -176,8 +176,8 @@ const Navbar = () => {
                                 <Link href="/sign-in" className="w-full">
                                     <Button variant="outline" className="w-full h-12 rounded-2xl text-lg font-bold border-primary/20">Student Sign In</Button>
                                 </Link>
-                                <Link href="/sign-in/admin" className="w-full">
-                                    <Button className="w-full h-12 rounded-2xl text-lg font-bold bg-primary shadow-lg shadow-primary/20">Admin Portal</Button>
+                                <Link href="/sign-in/faculty" className="w-full">
+                                    <Button className="w-full h-12 rounded-2xl text-lg font-bold bg-primary shadow-lg shadow-primary/20">Faculty Sign In</Button>
                                 </Link>
                             </div>
                         </div>

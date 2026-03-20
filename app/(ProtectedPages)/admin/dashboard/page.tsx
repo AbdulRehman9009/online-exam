@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAdminStats, getEngagementStats } from "@/lib/actions/admin";
 import { Users, FileText, School, GraduationCap, Shield, AlertTriangle, RefreshCcw, Loader2 } from "lucide-react";
@@ -21,43 +22,7 @@ function DashboardSkeleton() {
 
 async function StatCards() {
   const stats = await getAdminStats();
-  
-  const statCards = [
-    {
-      title: "Total Students",
-      value: stats.studentCount,
-      icon: GraduationCap,
-      description: "Registered learners",
-      trend: "+12% this month",
-      color: "bg-blue-500/10 text-blue-600",
-    },
-    {
-      title: "Active Faculty",
-      value: stats.facultyCount,
-      icon: Users,
-      description: "Teaching staff",
-      trend: "Stable",
-      color: "bg-indigo-500/10 text-indigo-600",
-    },
-    {
-      title: "Published Exams",
-      value: stats.examCount,
-      icon: FileText,
-      description: "Live or upcoming",
-      trend: "+5 new",
-      color: "bg-purple-500/10 text-purple-600",
-    },
-    {
-      title: "Institutional Units",
-      value: stats.departmentCount,
-      icon: School,
-      description: "Departments",
-      trend: "No change",
-      color: "bg-emerald-500/10 text-emerald-600",
-    },
-  ];
-
-  return <StatCardsClient statCards={statCards} />;
+  return <StatCardsClient stats={stats} />;
 }
 
 async function EngagementAnalytics() {

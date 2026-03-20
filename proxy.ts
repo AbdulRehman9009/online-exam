@@ -9,7 +9,6 @@ import {
 
 export function proxy(request: NextRequest) {
   const { nextUrl } = request;
-  // Check for session token cookie (next-auth sets this)
   const isLoggedIn = !!request.cookies.get("authjs.session-token")?.value 
     || !!request.cookies.get("__Secure-authjs.session-token")?.value;
 

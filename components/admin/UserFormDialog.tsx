@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { RegisterSchema } from "@/lib/schemas";
-import { createUser, getDepartments, getCourses, getFaculties } from "@/lib/actions/admin";
+import { createUser } from "@/lib/actions/admin";
 import {
   Dialog,
   DialogContent,
@@ -38,18 +38,6 @@ export function UserFormDialog({ isOpen, onOpenChange, role, initialData }: User
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const isEditing = !!initialData;
-
-  const [departments, setDepartments] = useState<any[]>([]);
-  const [courses, setCourses] = useState<any[]>([]);
-  const [faculties, setFaculties] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (isOpen) {
-      getDepartments().then(setDepartments);
-      getCourses().then(setCourses);
-      getFaculties().then(setFaculties);
-    }
-  }, [isOpen]);
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(isEditing ? z.any() : RegisterSchema),
@@ -142,92 +130,27 @@ export function UserFormDialog({ isOpen, onOpenChange, role, initialData }: User
           </div>
 
           {role === "STUDENT" && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="rollNo">Roll Number</Label>
-                <Input
-                  id="rollNo"
-                  placeholder="STU-2024-001"
-                  disabled={isPending}
-                  {...form.register("rollNo")}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Course</Label>
-                <Select 
-                  disabled={isPending} 
-                  onValueChange={(v) => form.setValue("courseId", v)}
-                  defaultValue={form.getValues("courseId")}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Course" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {courses.map((course) => (
-                      <SelectItem key={course.id} value={course.id}>
-                        {course.name} ({course.code})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Assigned Faculty</Label>
-                <Select 
-                  disabled={isPending} 
-                  onValueChange={(v) => form.setValue("facultyId", v)}
-                  defaultValue={form.getValues("facultyId")}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Faculty Advisor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {faculties.map((f) => (
-                      <SelectItem key={f.id} value={f.faculty?.id}>
-                        {f.name} ({f.faculty?.teacherNo || "No ID"})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="text-[10px] text-muted-foreground italic">Connects student to specific faculty head.</p>
-              </div>
-            </>
+            <div className="space-y-2">
+              <Label htmlFor="rollNo">Roll Number</Label>
+              <Input
+                id="rollNo"
+                placeholder="STU-2024-001"
+                disabled={isPending}
+                {...form.register("rollNo")}
+              />
+            </div>
           )}
 
           {role === "FACULTY" && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="teacherNo">Teacher Identification No.</Label>
-                <Input
-                  id="teacherNo"
-                  placeholder="FAC-2024-001"
-                  disabled={isPending}
-                  {...form.register("teacherNo")}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Department</Label>
-                <Select 
-                  disabled={isPending} 
-                  onValueChange={(v) => form.setValue("departmentId", v)}
-                  defaultValue={form.getValues("departmentId")}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {departments.map((dept) => (
-                      <SelectItem key={dept.id} value={dept.id}>
-                        {dept.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
+            <div className="space-y-2">
+              <Label htmlFor="teacherNo">Teacher Identification No.</Label>
+              <Input
+                id="teacherNo"
+                placeholder="FAC-2024-001"
+                disabled={isPending}
+                {...form.register("teacherNo")}
+              />
+            </div>
           )}
 
           <DialogFooter>

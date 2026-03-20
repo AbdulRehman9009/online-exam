@@ -11,6 +11,11 @@ const AdminSignInPage = () => {
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-md">
       <SignInForm role="admin" />
+      <div className="mt-4 text-sm">
+        <Link href="/forgot-password" className="text-primary hover:underline font-medium">
+          Forgot your password?
+        </Link>
+      </div>
     </div>
   );
 };

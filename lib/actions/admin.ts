@@ -171,21 +171,20 @@ export async function createUser(values: z.infer<typeof RegisterSchema>) {
         email,
         password: hashedPassword,
         role,
-        // Initialize specific profiles
         ...(role === "FACULTY" && { 
           faculty: { 
             create: { 
-              teacherNo,
-              departmentId
+              teacherNo: teacherNo || undefined,
+              departmentId: departmentId || undefined
             } 
           } 
         }),
         ...(role === "STUDENT" && { 
           student: { 
             create: { 
-              rollNo,
-              courseId,
-              facultyId
+              rollNo: rollNo || undefined,
+              courseId: courseId || undefined,
+              facultyId: facultyId || undefined
             } 
           } 
         }),
@@ -244,16 +243,30 @@ export async function updateUser(values: z.infer<typeof UpdateUserSchema>) {
         ...(existingUser.role === "STUDENT" && {
           student: {
             upsert: {
-              create: { rollNo, courseId, facultyId },
-              update: { rollNo, courseId, facultyId }
+              create: { 
+                rollNo: rollNo || undefined, 
+                courseId: courseId || undefined, 
+                facultyId: facultyId || undefined 
+              },
+              update: { 
+                rollNo: rollNo || undefined, 
+                courseId: courseId || undefined, 
+                facultyId: facultyId || undefined 
+              }
             }
           }
         }),
         ...(existingUser.role === "FACULTY" && {
           faculty: {
             upsert: {
-              create: { teacherNo, departmentId },
-              update: { teacherNo, departmentId }
+              create: { 
+                teacherNo: teacherNo || undefined, 
+                departmentId: departmentId || undefined 
+              },
+              update: { 
+                teacherNo: teacherNo || undefined, 
+                departmentId: departmentId || undefined 
+              }
             }
           }
         })

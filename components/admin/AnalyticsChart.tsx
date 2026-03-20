@@ -12,7 +12,6 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import { motion } from "motion/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AnalyticsChartProps {
@@ -25,11 +24,7 @@ interface AnalyticsChartProps {
 
 export function AnalyticsChart({ data }: AnalyticsChartProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-    >
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
       <Card className="lg:col-span-4 border-none shadow-md bg-card/50 backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="text-xl">Platform Engagement</CardTitle>
@@ -103,6 +98,6 @@ export function AnalyticsChart({ data }: AnalyticsChartProps) {
         </ResponsiveContainer>
       </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }
