@@ -5,6 +5,16 @@
  */
 export const publicRoutes = [
   "/",
+  "/about",
+  "/blog",
+  "/contact",
+  "/demo",
+  "/documentation",
+  "/features",
+  "/guides",
+  "/privacy",
+  "/security",
+  "/terms",
 ];
 
 /**

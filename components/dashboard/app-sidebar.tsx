@@ -88,33 +88,20 @@ export function AppSidebar({ role, user, ...props }: AppSidebarProps) {
             const isActive = pathname === item.url;
             return (
               <SidebarMenuItem key={item.title}>
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
                   <SidebarMenuButton
                     asChild
                     tooltip={item.title}
                     className={`relative flex items-center gap-3 px-3 py-6 rounded-xl transition-all duration-300 ${
                       isActive 
-                        ? "text-primary-foreground shadow-lg shadow-primary/20" 
+                        ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
                         : "hover:bg-primary/10 hover:text-primary text-muted-foreground"
                     }`}
                   >
-                    <Link href={item.url} className="relative z-10 w-full flex items-center gap-3">
+                    <Link href={item.url} className="w-full flex items-center gap-3">
                       <item.icon size={20} className={isActive ? "text-primary-foreground" : ""} />
                       <span className={`font-bold ${isActive ? "text-primary-foreground" : ""}`}>{item.title}</span>
-                      {isActive && (
-                        <motion.div
-                          layoutId="active-nav"
-                          className="absolute inset-0 bg-primary rounded-xl -z-10"
-                          transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                        />
-                      )}
                     </Link>
                   </SidebarMenuButton>
-                </motion.div>
               </SidebarMenuItem>
             );
           })}

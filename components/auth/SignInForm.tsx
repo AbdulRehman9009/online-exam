@@ -13,6 +13,7 @@ import { AuthFormWrapper } from "./AuthFormWrapper";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
 
 interface SignInFormProps {
   role: "student" | "faculty" | "admin";
@@ -23,6 +24,7 @@ export const SignInForm = ({ role }: SignInFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState<string | undefined>("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const {
@@ -98,13 +100,30 @@ export const SignInForm = ({ role }: SignInFormProps) => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••"
-              disabled={isPending}
-              {...register("password")}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••"
+                disabled={isPending}
+                className="pr-10"
+                {...register("password")}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                )}
+              </Button>
+            </div>
             {errors.password && (
               <p className="text-sm text-destructive">{errors.password.message}</p>
             )}

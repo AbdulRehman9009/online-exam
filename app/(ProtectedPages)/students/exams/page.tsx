@@ -31,11 +31,8 @@ export default async function StudentExamsPage() {
 
   const facultyUserId = student?.faculty?.userId;
 
-  // If student is not linked to any faculty, they shouldn't see any exams as per requirements
-  const exams = facultyUserId ? await prisma.exam.findMany({
-    where: {
-      creatorId: facultyUserId
-    },
+  // Removed strict faculty linking requirement so students can view all available exams 
+  const exams = await prisma.exam.findMany({
     orderBy: {
       createdAt: 'desc'
     },
@@ -44,7 +41,7 @@ export default async function StudentExamsPage() {
         select: { questions: true }
       }
     }
-  }) : [];
+  });
 
   return (
     <div className="space-y-6">

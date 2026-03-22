@@ -18,15 +18,14 @@ export async function getStudentDashboardData() {
   const facultyUserId = studentProfile?.faculty?.userId
 
   const [upcomingExams, results, notifications] = await Promise.all([
-    facultyUserId ? prisma.exam.count({
+    prisma.exam.count({
       where: {
-        creatorId: facultyUserId,
         OR: [
           { startTime: { gt: new Date() } },
           { startTime: null }
         ]
       }
-    }) : Promise.resolve(0),
+    }),
     prisma.result.findMany({
       where: { studentId: userId },
       include: { exam: true },

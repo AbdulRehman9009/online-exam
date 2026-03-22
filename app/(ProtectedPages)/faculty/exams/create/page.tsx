@@ -76,8 +76,8 @@ export default function CreateExamPage() {
     try {
       const payload = {
         ...data,
-        startTime: data.startTime || undefined,
-        expiresAt: data.expiresAt || undefined
+        startTime: data.startTime ? new Date(data.startTime).toISOString() : undefined,
+        expiresAt: data.expiresAt ? new Date(data.expiresAt).toISOString() : undefined
       };
 
       const response = await fetch("/api/exams", {
