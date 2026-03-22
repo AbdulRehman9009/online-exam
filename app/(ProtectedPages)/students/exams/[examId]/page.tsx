@@ -18,7 +18,10 @@ export default async function TakeExamPage({ params }: { params: Promise<{ examI
    const exam = await prisma.exam.findUnique({
       where: { id: examId },
       include: {
-         questions: true
+         questions: true,
+         results: {
+            where: { studentId: session.user.id }
+         }
       }
    });
 
@@ -30,6 +33,22 @@ export default async function TakeExamPage({ params }: { params: Promise<{ examI
    const now = new Date();
    const hasStarted = exam.startTime ? now >= exam.startTime : true;
    const hasExpired = exam.expiresAt ? now > exam.expiresAt : false;
+   const isCompleted = exam.results.length > 0;
+
+   if (isCompleted) {
+      return (
+         <div className="flex flex-col items-center justify-center p-12 max-w-lg mx-auto text-center border rounded-xl bg-card border-blue-200">
+            <AlertTriangle className="h-10 w-10 text-blue-500 mb-4" />
+            <h2 className="text-xl font-bold">Exam Already Completed</h2>
+            <p className="text-muted-foreground mt-2 mb-6">
+               You have already completed this examination. You cannot take it again.
+            </p>
+            <Button asChild variant="outline">
+               <Link href="/students/exams">Go Back to My Exams</Link>
+            </Button>
+         </div>
+      );
+   }
 
    if (!hasStarted) {
       return (

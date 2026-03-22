@@ -154,7 +154,7 @@ export async function createUser(values: z.infer<typeof RegisterSchema>) {
       return { error: "Invalid form data provided" };
     }
 
-    const { email, password, name, role, rollNo, teacherNo, departmentId, courseId, facultyId } = validatedFields.data;
+    const { email, password, name, role, rollNo, departmentId, courseId, facultyId } = validatedFields.data;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const existingUser = await prisma.user.findUnique({
@@ -174,7 +174,6 @@ export async function createUser(values: z.infer<typeof RegisterSchema>) {
         ...(role === "FACULTY" && { 
           faculty: { 
             create: { 
-              teacherNo: teacherNo || undefined,
               departmentId: departmentId || undefined
             } 
           } 
@@ -216,7 +215,7 @@ export async function updateUser(values: z.infer<typeof UpdateUserSchema>) {
       return { error: "Invalid form data provided" };
     }
 
-    const { id, email, password, name, rollNo, teacherNo, departmentId, courseId, facultyId } = validatedFields.data;
+    const { id, email, password, name, rollNo, departmentId, courseId, facultyId } = validatedFields.data;
 
     const existingUser = await prisma.user.findUnique({
       where: { id },
@@ -260,11 +259,9 @@ export async function updateUser(values: z.infer<typeof UpdateUserSchema>) {
           faculty: {
             upsert: {
               create: { 
-                teacherNo: teacherNo || undefined, 
                 departmentId: departmentId || undefined 
               },
               update: { 
-                teacherNo: teacherNo || undefined, 
                 departmentId: departmentId || undefined 
               }
             }
@@ -322,8 +319,7 @@ export async function getFaculties() {
       name: true,
       faculty: {
         select: {
-          id: true,
-          teacherNo: true
+          id: true
         }
       }
     },

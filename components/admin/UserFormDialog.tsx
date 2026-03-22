@@ -49,7 +49,6 @@ export function UserFormDialog({ isOpen, onOpenChange, role, initialData }: User
       password: "",
       role: role,
       rollNo: initialData?.student?.rollNo || "",
-      teacherNo: initialData?.faculty?.teacherNo || "",
       departmentId: initialData?.faculty?.departmentId || "",
       courseId: initialData?.student?.courseId || "",
       facultyId: initialData?.student?.facultyId || "",
@@ -156,18 +155,6 @@ export function UserFormDialog({ isOpen, onOpenChange, role, initialData }: User
                 placeholder="STU-2024-001"
                 disabled={isPending}
                 {...form.register("rollNo")}
-              />
-            </div>
-          )}
-
-          {role === "FACULTY" && (
-            <div className="space-y-2">
-              <Label htmlFor="teacherNo">Teacher Identification No.</Label>
-              <Input
-                id="teacherNo"
-                placeholder="FAC-2024-001"
-                disabled={isPending}
-                {...form.register("teacherNo")}
               />
             </div>
           )}

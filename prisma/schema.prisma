@@ -55,7 +55,6 @@ model Faculty {
   id           String      @id @default(cuid())
   userId       String      @unique
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teacherNo    String?     @unique
   departmentId String?
   department   Department? @relation(fields: [departmentId], references: [id])
   queries      StudentQuery[]

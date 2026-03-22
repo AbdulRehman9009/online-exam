@@ -27,16 +27,21 @@ export async function askQuestion(values: z.infer<typeof QuerySchema>) {
 
   if (!student) throw new Error("Student profile not found");
 
-  await prisma.studentQuery.create({
-    data: {
-      studentId: student.id,
-      facultyId: values.facultyId,
-      question: values.question,
-    }
-  });
+  try {
+    await prisma.studentQuery.create({
+      data: {
+        studentId: student.id,
+        facultyId: values.facultyId || undefined,
+        question: values.question,
+      }
+    });
 
-  revalidatePath("/students/dashboard");
-  return { success: "Question submitted successfully" };
+    revalidatePath("/students/dashboard");
+    return { success: "Question submitted successfully" };
+  } catch (error: any) {
+    console.error("ASK_QUESTION_ERROR", error);
+    return { error: "Failed to submit question. Please check if the selected faculty exists." };
+  }
 }
 
 export async function answerQuestion(values: z.infer<typeof AnswerSchema>) {

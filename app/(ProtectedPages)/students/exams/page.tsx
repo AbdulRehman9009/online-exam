@@ -39,6 +39,9 @@ export default async function StudentExamsPage() {
     include: {
       _count: {
         select: { questions: true }
+      },
+      results: {
+        where: { studentId: session.user.id }
       }
     }
   });
@@ -70,18 +73,23 @@ export default async function StudentExamsPage() {
             const now = new Date();
             
             // Availability Logic
+            const isCompleted = exam.results.length > 0;
             const hasStarted = exam.startTime ? now >= exam.startTime : true;
             const hasExpired = exam.expiresAt ? now > exam.expiresAt : false;
             
-            const isAvailable = hasStarted && !hasExpired;
-            const isUpcoming = !hasStarted;
+            const isAvailable = hasStarted && !hasExpired && !isCompleted;
+            const isUpcoming = !hasStarted && !isCompleted;
 
             return (
-              <Card key={exam.id} className={`flex flex-col ${!isAvailable ? 'opacity-70 grayscale-30' : ''}`}>
+              <Card key={exam.id} className={`flex flex-col ${(!isAvailable && !isCompleted) ? 'opacity-70 grayscale-30' : ''}`}>
                 <CardHeader>
                   <div className="flex justify-between items-start gap-4">
                     <CardTitle className="line-clamp-2">{exam.title}</CardTitle>
-                    {isAvailable ? (
+                    {isCompleted ? (
+                       <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full whitespace-nowrap font-medium dark:bg-blue-900/30 dark:text-blue-400">
+                         Completed
+                       </span>
+                    ) : isAvailable ? (
                       <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full whitespace-nowrap font-medium dark:bg-green-900/30 dark:text-green-400">
                          Available
                       </span>
@@ -129,10 +137,13 @@ export default async function StudentExamsPage() {
                 <CardFooter className="border-t bg-muted/20 pt-4">
                    <Button 
                       className="w-full" 
-                      disabled={!isAvailable}
+                      disabled={!isAvailable || isCompleted}
+                      variant={isCompleted ? "secondary" : "default"}
                       asChild={isAvailable}
                    >
-                     {isAvailable ? (
+                     {isCompleted ? (
+                        "Already Completed"
+                     ) : isAvailable ? (
                         <Link href={`/students/exams/${exam.id}`}>
                            Start Exam
                         </Link>

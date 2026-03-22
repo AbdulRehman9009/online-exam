@@ -134,7 +134,7 @@ export default async function FacultyDashboardPage() {
                 <ChevronRight className="h-5 w-5 text-muted-foreground" />
               </div>
             </Link>
-            <Link href="/faculty/students">
+            <Link href="/faculty/results">
               <div className="flex items-center justify-between p-4 border rounded-xl hover:bg-muted/50 transition-colors cursor-pointer">
                 <div className="flex items-center gap-4">
                   <div className="p-2 bg-primary/10 text-primary rounded-lg">
@@ -142,7 +142,7 @@ export default async function FacultyDashboardPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium">Student Directory</p>
-                    <p className="text-xs text-muted-foreground">View enrolled students</p>
+                    <p className="text-xs text-muted-foreground">View students result</p>
                   </div>
                 </div>
                 <ChevronRight className="h-5 w-5 text-muted-foreground" />

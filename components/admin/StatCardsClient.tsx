@@ -3,14 +3,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LucideIcon } from "lucide-react";
 
-import { Users, FileText, School, GraduationCap } from "lucide-react";
+import { Users, FileText, GraduationCap } from "lucide-react";
 
 interface StatCardsClientProps {
   stats: {
     studentCount: number | string;
     facultyCount: number | string;
     examCount: number | string;
-    departmentCount: number | string;
   };
 }
 
@@ -40,18 +39,10 @@ export function StatCardsClient({ stats }: StatCardsClientProps) {
       trend: "+5 new",
       color: "bg-purple-500/10 text-purple-600",
     },
-    {
-      title: "Institutional Units",
-      value: stats.departmentCount,
-      icon: School,
-      description: "Departments",
-      trend: "No change",
-      color: "bg-emerald-500/10 text-emerald-600",
-    },
   ];
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {statCards.map((stat) => (
         <div key={stat.title}>
           <Card className="border-none shadow-md shadow-black/5 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">

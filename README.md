@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Online Exam System 🎓
 
-## Getting Started
+A modern, fast, and comprehensive full-stack Online Examination platform designed to handle multi-role workflows. Built using the highly scalable **Next.js App Router**, **Prisma ORM**, and **PostgreSQL**.
 
-First, run the development server:
+## 🚀 Key Features
 
+*   **Role-Based Access Control (RBAC):**
+    *   **Admin:** Full dashboard analytics, manage faculty and students, configure platform settings.
+    *   **Faculty:** Create and manage exams, review student queries, view automated exam results and grades.
+    *   **Student:** Browse available exams, take secure interactive tests, view real-time grading and stats.
+*   **Automated Evaluation:** Instant scoring for multiple-choice questions right after exam submission.
+*   **Time-Restricted Exams:** Strict exam windows with start and expiration dates, and countdown timers.
+*   **Student & Faculty Communications:** Direct query and resolution portal baked in.
+*   **Extremely Performant:** Server-side generated and cached stats via React Server Components.
+*   **Responsive UI/UX:** Powered by Tailwind CSS and Shadcn UI to deliver a seamless dark/light mode experience.
+
+## 🛠️ Technology Stack
+
+*   **Framework:** [Next.js](https://nextjs.org/) (App Router, Server Actions)
+*   **Database ORM:** [Prisma](https://www.prisma.io/)
+*   **Database Engine:** [PostgreSQL](https://www.postgresql.org/)
+*   **Styling & UI:** [Tailwind CSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/)
+*   **Authentication:** [Auth.js (NextAuth)](https://authjs.dev/)
+*   **Validation:** [Zod](https://zod.dev/)
+
+## ⚙️ Getting Started
+
+### Prerequisites
+Make sure you have Node.js and a PostgreSQL instance running.
+
+### 1. Installation
+Clone the repository and install the dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Environment Setup
+Rename `.env.example` (or setup a new `.env` file) in your root directory and add the following keys:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/online-exam?schema=public"
+AUTH_SECRET="your-generated-random-secret"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+```
+*(Tip: You can generate an `AUTH_SECRET` by running `npx auth secret`)*
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Database Initialization
+Run Prisma migrations and push the initial schema into the database:
+```bash
+npx prisma generate
+npx prisma db push
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Development Server
+Start the development server:
+```bash
+npm run dev
+```
+Navigate to `http://localhost:3000` to view the application.
 
-## Learn More
+## 🤝 Contributing
+Contributions are always welcome. Feel free to open a Pull Request to propose features or bug fixes.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 License
+This template is licensed under the [MIT License](LICENSE).

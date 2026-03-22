@@ -62,7 +62,6 @@ export function UserManagementTable({ users, role }: UserManagementTableProps) {
             <TableHead className="font-bold py-4">Name</TableHead>
             <TableHead className="font-bold py-4">Email</TableHead>
             {role === "STUDENT" && <TableHead className="font-bold py-4">Roll No</TableHead>}
-            {role === "FACULTY" && <TableHead className="font-bold py-4">Teacher ID</TableHead>}
             <TableHead className="font-bold py-4">Department</TableHead>
             <TableHead className="font-bold py-4">Joined</TableHead>
             <TableHead className="text-right font-bold py-4">Actions</TableHead>
@@ -76,7 +75,7 @@ export function UserManagementTable({ users, role }: UserManagementTableProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <TableCell colSpan={role === "STUDENT" ? 6 : 6} className="text-center h-24 text-muted-foreground italic">
+                <TableCell colSpan={role === "STUDENT" ? 6 : 5} className="text-center h-24 text-muted-foreground italic">
                   No {role.toLowerCase()} found.
                 </TableCell>
               </motion.tr>
@@ -93,7 +92,6 @@ export function UserManagementTable({ users, role }: UserManagementTableProps) {
                   <TableCell className="font-bold py-4">{user.name}</TableCell>
                   <TableCell className="text-muted-foreground">{user.email}</TableCell>
                   {role === "STUDENT" && <TableCell className="font-black text-primary">{user.student?.rollNo || "N/A"}</TableCell>}
-                  {role === "FACULTY" && <TableCell className="font-black text-primary">{user.faculty?.teacherNo || "N/A"}</TableCell>}
                   <TableCell>
                     <span className="px-2 py-1 rounded-md bg-secondary/50 text-[10px] font-bold uppercase tracking-wider">
                       {role === "FACULTY" 
