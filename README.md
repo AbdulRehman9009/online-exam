@@ -23,39 +23,62 @@ A modern, fast, and comprehensive full-stack Online Examination platform designe
 *   **Authentication:** [Auth.js (NextAuth)](https://authjs.dev/)
 *   **Validation:** [Zod](https://zod.dev/)
 
-## ⚙️ Getting Started
+---
 
-### Prerequisites
-Make sure you have Node.js and a PostgreSQL instance running.
+## ⚙️ Getting Started (Step-by-Step Guide)
 
-### 1. Installation
-Clone the repository and install the dependencies:
+Welcome! Follow these simple steps to run this application on your computer. 
+
+### Step 1: Install Prerequisites
+Before you begin, ensure you have the following installed on your computer:
+1. **Node.js**: Download and install the latest LTS version from [nodejs.org](https://nodejs.org/).
+2. **Git**: Download and install from [git-scm.com](https://git-scm.com/).
+
+### Step 2: Clone the Project
+Open your computer's terminal (Command Prompt or Terminal app) and run the following command to download the code to your machine:
+```bash
+git clone <your-repository-url>
+cd online-exam
+```
+
+### Step 3: Install Required Packages
+In the terminal, make sure you are in the `online-exam` folder, and type the following command to download all necessary libraries:
 ```bash
 npm install
 ```
 
-### 2. Environment Setup
-Rename `.env.example` (or setup a new `.env` file) in your root directory and add the following keys:
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/online-exam?schema=public"
-AUTH_SECRET="your-generated-random-secret"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-```
-*(Tip: You can generate an `AUTH_SECRET` by running `npx auth secret`)*
+### Step 4: Configure the Environment Variables
+1. Look for a file named `.env.example` in the project folder.
+2. Make a copy of this file and rename the new copy to **`.env`** (make sure there is a dot at the beginning).
+3. Open the new `.env` file using any text editor (like Notepad or VS Code) and follow the instructions inside to fill in your `DATABASE_URL`, `AUTH_SECRET`, and `SMTP` (Email) settings.
+   > **Note:** To easily obtain a Database URL, sign up at [Neon.tech](https://neon.tech) and create a free PostgreSQL project. Copy the connection string provided and paste it into the `DATABASE_URL` section in your `.env` file.
 
-### 3. Database Initialization
-Run Prisma migrations and push the initial schema into the database:
+### Step 5: Setup the Database
+Once your `.env` file is ready and connected to a database, you need to "push" the table structures into the database. Run these two commands in your terminal:
 ```bash
 npx prisma generate
+```
+```bash
 npx prisma db push
 ```
 
-### 4. Development Server
-Start the development server:
+### Step 6: Start the Project!
+Finally, you can start the website. Run this command:
 ```bash
 npm run dev
 ```
-Navigate to `http://localhost:3000` to view the application.
+
+Open a web browser (like Chrome or Safari) and go to **[http://localhost:3000](http://localhost:3000)**. The website should now be running!
+
+---
+
+## 🔐 Password Resets & Administration
+
+* **Admin Role:** Administrators have full privileges. You can set the Role manually via the database or through secure API routes (setup your first admin via Prisma Studio if needed by running `npx prisma studio`).
+* **Forgot Password:** The "Forgot Password" flow is strictly limited to **Admin** users to prevent unauthorized token exploit attempts. 
+* **Student/Faculty Passwords:** Students and Faculty who forget their passwords must contact an Administrator. The Administrator can easily reset their password securely from the Admin Dashboard -> Create/Edit User panel.
+
+---
 
 ## 🤝 Contributing
 Contributions are always welcome. Feel free to open a Pull Request to propose features or bug fixes.

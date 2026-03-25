@@ -103,6 +103,10 @@ export const resetPassword = async (email: string) => {
     return { error: "Email not found!" };
   }
 
+  if (existingUser.role !== "ADMIN") {
+    return { error: "Password resets for students and faculty must be requested through the Admin Panel. Please contact an administrator." };
+  }
+
   const passwordResetToken = await generatePasswordResetToken(email);
   await sendPasswordResetEmail(
     passwordResetToken.email,
